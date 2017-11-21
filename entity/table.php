@@ -104,7 +104,7 @@ class da_entity_table{
 	}
 
 	private function add_insert_function(){
-		$signature = 'public function insert_one($data)';
+		$signature = 'public function create($data)';
 		$this->functions[] = array(
 			'signature' => $signature,
 			'check_columns' => $this->check_column_names,

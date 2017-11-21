@@ -7,9 +7,9 @@ class {{$conf.plugin_short_name}}_innertable_{{$table->name}} extends {{$conf.pl
         $this->_pk = '{{$table->pk}}';
         $this->_pre_cache_key = '{{$table->name}}_';
         $this->_field_list = array(
-            {{foreach $table->columns as $column}}
+{{foreach $table->columns as $column}}
             '{{$column->name}}',
-            {{/foreach}}
+{{/foreach}}
         );
         parent::__construct();
     }

@@ -11,7 +11,7 @@ class da_entity_api
 	public $info;
 	public $table;
 	public $allowed_interfaces;
-	public $field_names;
+	public $fields;
 	public $field_reverse_map = array();
 	public $functions = array();
 
@@ -29,9 +29,18 @@ class da_entity_api
 		$this->info = $conf[$name];
 		$this->table = da_entity_table::get_table($this->info['table']);
 		$this->allowed_interfaces = $this->info['allowed_interfaces'];
-		$this->field_names = $this->info['fields'];
-		foreach ($this->field_names as $field_name => $field) {
-			$this->field_reverse_map[$field['map']] = $field_name;
+		$this->fields = $this->info['fields'];
+		foreach ($this->fields as $field_name => &$field) {
+			if(empty($field['need_encode'])){
+				$field['need_encode'] = false;
+			}
+			if(empty($field['map'])){
+				$field['map'] = $field_name;
+			}
+			$column_name = $field['map'];
+			$this->field_reverse_map[$column_name] = $field_name;
+			$column = $this->table->columns[$column_name];
+			$field['column'] = $column;
 		}
 	}
 }
