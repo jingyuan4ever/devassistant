@@ -25,6 +25,13 @@ abstract class {{$conf.plugin_short_name}}_innerapi_{{$api->name}} extends {{$co
         C::t('#{{$conf.plugin_name}}#{{$table->name}}')->create($data);
     }
 
+{{if $table->has_status}}
+    public function remove(){
+        $id = $this->check_{{$api->field_reverse_map[$table->pk]}}();
+        C::t('#{{$conf.plugin_name}}#{{$table->name}}')->remove($id);
+    }
+{{/if}}
+
 {{foreach $api->fields as $field_name => $field}}
 {{$type = $field.column->da_type}}
 {{$length = $field.column->length}}

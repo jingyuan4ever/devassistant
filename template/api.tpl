@@ -10,6 +10,9 @@ class {{$api->name}} extends {{$conf.plugin_short_name}}_innerapi_{{$api->name}}
             'get_list' => array(),
             'get' => array(),
             'create' => array(),
+{{if $table->has_status}}
+            'remove' => array(),
+{{/if}}
         );
     }
 }

@@ -13,6 +13,7 @@ class da_entity_column{
 	public $extra;
 	public $need_input;
 	public $is_ai;
+	public $is_pk;
 
 	public function __construct($column)
 	{
@@ -28,6 +29,7 @@ class da_entity_column{
 		$this->not_null = $column['Null'] == 'NO' ? true : false;
 		$this->extra = $column['Extra'];
 		$this->is_ai = $column['Extra'] == 'auto_increment' ? true : false;
+		$this->is_pk = $column['Key'] == 'PRI' ? true : false;
 		$this->da_type = $this->get_da_type();
 		$this->need_input = $this->get_need_input();
 	}

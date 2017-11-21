@@ -13,6 +13,7 @@ class da_entity_table{
 	public $check_column_names = array();
 	public $indexes = array();
 	public $functions = array();
+	public $has_status = false;
 
 	public static function get_table($tableName){
 		if(empty(self::$table_pool[$tableName])){
@@ -39,20 +40,24 @@ class da_entity_table{
 //		foreach ($this->indexes as $index) {
 //			$this->add_update_function($index);
 //		}
-		$this->add_insert_function();
 	}
 
 	private function add_column($column){
-		if($column['Key'] == 'PRI'){
-			$this->pk = $column['Field'];
+		$column_entity = new da_entity_column($column);
+		$this->columns[$column_entity->name] = $column_entity;
+
+		$this->is_ai = $column_entity->is_ai;
+
+		if($column_entity->is_pk){
+			$this->pk = $column_entity->name;
 		}
-		if($column['Extra'] == 'auto_increment'){
-			$this->is_ai = true;
+
+		if($column_entity->need_input){
+			$this->check_column_names[] = $column_entity->name;
 		}
-		$this->columns[$column['Field']] = new da_entity_column($column);
-		$column = $this->columns[$column['Field']];
-		if($column->not_null && $column->default == NULL && $column->extra != 'auto_increment'){
-			$this->check_column_names[] = $column->name;
+
+		if($column_entity->name == 'status'){
+			$this->has_status = true;
 		}
 	}
 
@@ -112,5 +117,11 @@ class da_entity_table{
 		);
 	}
 
-
+	private function add_remove_function(){
+		$signature = 'public function remove($id)';
+		$this->functions[] = array(
+			'signature' => $signature,
+			'type' => 'remove',
+		);
+	}
 }
