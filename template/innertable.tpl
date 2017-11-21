@@ -1,7 +1,7 @@
 <?php
 {{include file='common/common_head.tpl'}}
 
-class {{$conf.plugin_short_name}}_innertable_{{str_replace('_', '', $table->name)}} extends {{$conf.plugin_short_name}}_class_table{
+class {{$conf.plugin_short_name}}_innertable_{{$table->name}} extends {{$conf.plugin_short_name}}_class_table{
     public function __construct(){
 		$this->_table = '{{$table->name}}';
         $this->_pk = '{{$table->pk}}';

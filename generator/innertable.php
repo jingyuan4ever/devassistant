@@ -16,8 +16,7 @@ class da_generator_innertable extends da_generator_base
 	}
 
 	function get_output_filename(){
-		$s = str_replace('_', '', $this->_table->name);
-		return "$s.php";
+		return "{$this->_table->name}.php";
 	}
 
 	function get_output_dir()

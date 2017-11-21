@@ -14,13 +14,16 @@ class da_autoloader
 			return false;
 		}
 		$class = substr($class, strlen('da')+1);
-		$path = DEV_ASSISTANT_PLUGIN_PATH ."/". str_replace('_', '/', $class) . ".php";
-		if (!file_exists($path)) {
-			return false;
-		}
-		require_once $path;
-		if (class_exists($class)) {
-			return true;
+		while(($pos = strpos($class, '_')) != false) {
+			$class[$pos] = '/';
+			$path = DEV_ASSISTANT_PLUGIN_PATH . "/$class.php";
+			if (!file_exists($path)) {
+				continue;
+			}
+			require_once $path;
+			if (class_exists($class)) {
+				return true;
+			}
 		}
 		return false;
 	}
