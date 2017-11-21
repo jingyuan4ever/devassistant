@@ -1,6 +1,4 @@
 <?php
-define('IN_DISCUZ', 1);
-
 if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }

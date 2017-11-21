@@ -14,49 +14,49 @@ class {{$conf.plugin_short_name}}_innertable_{{$table->name}} extends {{$conf.pl
         parent::__construct();
     }
 
-    {{foreach $table->functions as $function}}
-    {{if $function.type == "get"}}
+{{foreach $table->functions as $function}}
+{{if $function.type == "get"}}
     {{$function.signature}}
     {
         $conditions = array();
-        {{foreach $function.columns as $column}}
+{{foreach $function.columns as $column}}
         if(!empty(${{$column->name}})){
             $conditions['{{$column->name}}'] = ${{$column->name}};
         }
-        {{/foreach}}
+{{/foreach}}
         if(!empty($extraConditions)){
             $conditions = array_merge($conditions, $extraConditions);
         }
         return $this->get_list(null, $conditions, $order, $offset, $limit);
     }
-    {{/if}}
+{{/if}}
 
-    {{if $function.type == "update"}}
+{{if $function.type == "update"}}
     {{$function.signature}}
     {
         $conditions = array();
-        {{foreach $function.columns as $column}}
+{{foreach $function.columns as $column}}
         if(!isset(${{$column->name}})){
             throw new Exception(__function__." needs condition {{$column->name}}!");
         }
-        {{/foreach}}
+{{/foreach}}
         if(!empty($extraConditions)){
             $conditions = array_merge($conditions, $extraConditions);
         }
         return $this;
     }
-    {{/if}}
+{{/if}}
 
-    {{if $function.type == "insert"}}
+{{if $function.type == "insert"}}
     {{$function.signature}}
     {
-        {{foreach $function.check_columns as $column}}
+{{foreach $function.check_columns as $column}}
         if(empty($data['{{$column}}'])){
             throw new Exception(__function__." needs param {{$column}}!");
         }
-        {{/foreach}}
+{{/foreach}}
         return parent::insert($data, true);
     }
-    {{/if}}
-    {{/foreach}}
+{{/if}}
+{{/foreach}}
 }
