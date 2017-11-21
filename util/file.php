@@ -27,33 +27,42 @@ class da_util_file
 	public static function mv_output(){
 		$dir = da_util_conf::get_plugin_output_dir();
 		self::traverse($dir, 'da_util_file::mv_file');
-	}
-
-	private static function mv_file($file, $pluginPath = DEV_ASSISTANT_PLUGIN_PATH."/.."){
-		if(!file_exists($file)){
-			return;
-		}
-		$protected = false;
-		$extension = self::get_extension($file);
-		if($extension == 'protected'){
-			$protected = true;
-			$file = self::strip_extension($file);
-		}
-		$plugin = str_replace(DEV_ASSISTANT_PLUGIN_PATH."/output", $pluginPath, $file);
-		if($protected && file_exists($plugin)){
-			return;
-		}
-		$cmd = "mv -f $file $plugin\n";
+		$cmd = "rm -rf $dir";
 		system($cmd);
 	}
 
-	private static function traverse($dirPath, $func = NULL){
+	private static function mv_file($filename, $pluginPath = DEV_ASSISTANT_PLUGIN_PATH."/.."){
+		if(!file_exists($filename)){
+			return;
+		}
+		$newFilename = $filename;
+		$protected = false;
+		$extension = self::get_extension($filename);
+		if($extension == 'protected'){
+			$protected = true;
+			$newFilename = self::strip_extension($filename);
+		}
+		$pluginFile = str_replace(DEV_ASSISTANT_PLUGIN_PATH."/output", $pluginPath, $newFilename);
+		if($protected && file_exists($pluginFile)){
+			return;
+		}
+		$pluginDir = dirname($pluginFile);
+		$cmd = "mkdir -p $pluginDir\n";
+		system($cmd);
+		$cmd = "cp -f $filename $pluginFile\n";
+		system($cmd);
+	}
+
+	private static function traverse($dirPath, $fileFunc = NULL, $dirFunc = NULL){
 		if(is_file($dirPath)){
-			if(empty($func)){
+			if(empty($fileFunc)){
 				return;
 			}
-			call_user_func_array($func, array($dirPath));
+			call_user_func_array($fileFunc, array($dirPath));
 			return;
+		}
+		if(!empty($dirFunc)){
+			call_user_func_array($dirFunc, array($dirPath));
 		}
 		$dir = dir($dirPath);
 		while($file = $dir->read()){
@@ -61,7 +70,7 @@ class da_util_file
 				continue;
 			}
 			$file = "$dirPath/$file";
-			self::traverse($file, $func);
+			self::traverse($file, $fileFunc);
 		}
 	}
 
