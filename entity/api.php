@@ -14,6 +14,7 @@ class da_entity_api
 	public $fields;
 	public $field_reverse_map = array();
 	public $functions = array();
+	public $need_encode = false;
 
 	public static function get_api($api_name){
 		if(empty(self::$api_pool[$api_name])){
@@ -33,6 +34,9 @@ class da_entity_api
 		foreach ($this->fields as $field_name => &$field) {
 			if(empty($field['need_encode'])){
 				$field['need_encode'] = false;
+			}
+			if($field['need_encode']){
+				$this->need_encode = true;
 			}
 			if(empty($field['map'])){
 				$field['map'] = $field_name;

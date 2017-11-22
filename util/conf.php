@@ -30,6 +30,15 @@ class da_util_conf
 					'*',
 				),
 			),
+			'question' => array(
+				'table' => 'qudati_question',
+				'fields' => array(
+					'id' => array(
+
+					),
+					'n' => array(),
+				),
+			)
 		),
 	);
 
@@ -55,5 +64,9 @@ class da_util_conf
 
 	public static function get_template_c_dir(){
 		return DEV_ASSISTANT_PLUGIN_PATH.'/template_c';
+	}
+
+	public static function get_private_key(){
+		return file_get_contents(DEV_ASSISTANT_PLUGIN_PATH."/private_key");
 	}
 }

@@ -13,6 +13,7 @@ class da_generator_innerapi extends da_generator_base
 		$this->_tpl_name = "innerapi";
 		$this->_api = da_entity_api::get_api($api_name);
 		$this->_smarty->assign('api', $this->_api);
+		$this->_smarty->assign('private_key', da_util_conf::get_private_key());
 	}
 
 	function get_output_filename()

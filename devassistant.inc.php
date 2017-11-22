@@ -49,6 +49,9 @@ foreach (da_util_conf::getConf('table') as $tableName){
 $install = new da_generator_install();
 $install->render();
 
+$conf = new da_generator_conf();
+$conf->render();
+
 da_util_file::mv_output();
 
 //echo <<<EOF

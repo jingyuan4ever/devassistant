@@ -50,7 +50,7 @@ class {{$conf.plugin_short_name}}_innertable_{{$table->name}} extends {{$conf.pl
 
     public function create($data)
     {
-{{foreach $table->check_column_names as $column}}
+{{foreach $tablecheck_column_names as $column}}
         if(empty($data['{{$column}}'])){
             throw new Exception(__function__." needs param {{$column}}!");
         }
