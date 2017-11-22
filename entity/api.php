@@ -29,7 +29,7 @@ class da_entity_api
 		$conf = da_util_conf::getConf('api');
 		$this->info = $conf[$name];
 		$this->table = da_entity_table::get_table($this->info['table']);
-		$this->allowed_interfaces = $this->info['allowed_interfaces'];
+		$this->allowed_interfaces = $this->get_allowed_interfaces();
 		$this->fields = $this->info['fields'];
 		foreach ($this->fields as $field_name => &$field) {
 			if(empty($field['need_encode'])){
@@ -46,5 +46,13 @@ class da_entity_api
 			$column = $this->table->columns[$column_name];
 			$field['column'] = $column;
 		}
+	}
+
+	private function get_allowed_interfaces(){
+		$default_allowed_interfaces = da_util_conf::getConf('default_allowed_interfaces');
+		if(!isset($this->info['allowed_interfaces']) || $this->info['allowed_interfaces'] == '*'){
+			return $default_allowed_interfaces;
+		}
+		return $this->info['allowed_interfaces'];
 	}
 }

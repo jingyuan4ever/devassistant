@@ -2,34 +2,49 @@
 {{include file='common/common_head.tpl'}}
 
 {{$table = $api->table}}
+{{$allowed_interfaces = $api->allowed_interfaces}}
 abstract class {{$conf.plugin_short_name}}_innerapi_{{$api->name}} extends {{$conf.plugin_short_name}}_class_apibase
 {
 
+{{if isset($allowed_interfaces['get_list'])}}
     public function get_list(){
         $data = C::t("#{{$conf.plugin_name}}#{{$api->info.table}}")->get_list();
+{{if $field.need_encode}}
         $this->encode_data($data, 2);
+{{/if}}
         return $data;
     }
+{{/if}}
 
+{{if isset($allowed_interfaces['get'])}}
     public function get(){
         $id = $this->check_{{$api->field_reverse_map[$table->pk]}}();
         $data = C::t("#{{$conf.plugin_name}}#{{$api->info.table}}")->get_by_pk($id);
+{{if $field.need_encode}}
         $this->encode_data($data);
+{{/if}}
         return $data;
     }
+{{/if}}
 
+{{if isset($allowed_interfaces['create'])}}
     public function create(){
         $data = array();
 {{foreach $table->columns as $column}}
 {{if $column->need_input}}
+{{if isset($api->field_reverse_map[$column->name])}}
         ${{$column->name}} = $this->check_{{$api->field_reverse_map[$column->name]}}();
         $data['{{$column->name}}'] = ${{$column->name}};
+{{else}}
+        //$data['{{$column->name}}'] = ${{$column->name}};
+{{/if}}
 {{/if}}
 {{/foreach}}
         C::t('#{{$conf.plugin_name}}#{{$table->name}}')->create($data);
     }
+{{/if}}
 
-{{if $table->has_status}}
+{{if isset($allowed_interfaces['remove']) && $table->has_status}}
     public function remove(){
         $id = $this->check_{{$api->field_reverse_map[$table->pk]}}();
         C::t('#{{$conf.plugin_name}}#{{$table->name}}')->remove($id);

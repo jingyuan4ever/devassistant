@@ -9,11 +9,17 @@ class da_util_conf
 		'plugin_name' => 'test',
 		'plugin_name_upper_case' => 'TEST',
 		'plugin_short_name' => 'tt',
-		'api_version' => 1,
 		'table' => array(
 			'qudati_quiz',
 			'qudati_question',
 		),
+		'default_allowed_interfaces' => array(
+			'get_list' => array(1),
+			'get' => array(),
+			'create' => array(),
+			'remove' => array(),
+		),
+		'api_version' => 1,
 		'api' => array(
 			'quiz' => array(
 				'table' => 'qudati_quiz',
@@ -26,9 +32,6 @@ class da_util_conf
 						'map' => 'name',
 					),
 				),
-				'allowed_interfaces' => array(
-					'*',
-				),
 			),
 			'question' => array(
 				'table' => 'qudati_question',
@@ -36,7 +39,9 @@ class da_util_conf
 					'id' => array(
 
 					),
-					'n' => array(),
+					'q' => array(
+						'map' => 'question',
+					),
 				),
 			)
 		),
