@@ -64,11 +64,11 @@ class da_util_conf
 	}
 
 	public static function get_template_dir(){
-		return DEV_ASSISTANT_PLUGIN_PATH.'/template';
+		return DEV_ASSISTANT_PLUGIN_PATH.'/da_template';
 	}
 
 	public static function get_template_c_dir(){
-		return DEV_ASSISTANT_PLUGIN_PATH.'/template_c';
+		return DEV_ASSISTANT_PLUGIN_PATH.'/da_template_c';
 	}
 
 	public static function get_private_key(){
